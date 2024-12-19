@@ -1,22 +1,29 @@
 package mysite.controller;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import mysite.dao.GuestbookDao;
-import mysite.vo.GuestbookVo;
-
-import java.io.IOException;
-import java.util.List;
+import mysite.controller.action.guestbook.DeleteAction;
+import mysite.controller.action.guestbook.DeleteFormAction;
+import mysite.controller.action.guestbook.InsertAction;
+import mysite.controller.action.guestbook.ListAction;
+import java.util.Map;
 
 @WebServlet("/guestbook") // /main을 입력하면 이곳으로 연결됨.
-public class GuestbookServlet extends HttpServlet {
+public class GuestbookServlet extends ActionServlet {
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private Map<String, Action> mapAction = Map.of(
+            "insert", new InsertAction(),
+            "deleteform", new DeleteFormAction(),
+            "delete", new DeleteAction()
+    );
+
+    @Override
+    protected Action getAction(String actionName) {
+
+        return mapAction.getOrDefault(actionName, new ListAction());
+    }
+
+    /*protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
         String action = request.getParameter("a");
         if ("insert".equals(action)) {
@@ -48,10 +55,6 @@ public class GuestbookServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/guestbook/list.jsp");
             rd.forward(request, response);
         }
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
+    }*/
 }
 

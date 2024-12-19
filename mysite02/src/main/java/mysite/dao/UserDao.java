@@ -1,11 +1,8 @@
 package mysite.dao;
 
-import mysite.vo.GuestbookVo;
 import mysite.vo.UserVo;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserDao {
     public int insert(UserVo vo) {
@@ -33,6 +30,98 @@ public class UserDao {
 
         return count;
     }
+
+    public UserVo findByEmailAndPassword(String email, String password) {
+        UserVo vo = null;
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("select id, name from user where email = ? and password = ?");
+        ) {
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Long id = rs.getLong(1);
+                String name = rs.getString(2);
+
+                vo = new UserVo();
+                vo.setId(id);
+                vo.setName(name);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("error:" + e);
+        }
+
+        return vo;
+    }
+
+    public UserVo findById(Long id) {
+        UserVo vo = null;
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("select email, name, gender from user where id = ?");
+        ) {
+            pstmt.setLong(1, id);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String email = rs.getString(1);
+                String name = rs.getString(2);
+                String gender = rs.getString(3);
+
+                vo = new UserVo();
+                vo.setEmail(email);
+                vo.setName(name);
+                vo.setGender(gender);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("error:" + e);
+        }
+
+        return vo;
+    }
+
+    public void update(UserVo vo) {
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, gender = ?, password = ? where id = ?");
+        ) {
+            pstmt.setString(1, vo.getName());
+            System.out.printf("name: " + vo.getName() + "\n");
+            pstmt.setString(2, vo.getGender());
+            pstmt.setString(3, vo.getPassword());
+            pstmt.setLong(4, vo.getId());
+
+            pstmt.executeQuery();
+
+        } catch (SQLException e) {
+            System.out.println("error:" + e);
+        }
+    }
+
+    public void updateNoPassword(UserVo vo) {
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, gender = ? where id = ?");
+        ) {
+            pstmt.setString(1, vo.getName());
+            pstmt.setString(2, vo.getGender());
+            pstmt.setLong(3, vo.getId());
+
+            pstmt.executeQuery();
+
+        } catch (SQLException e) {
+            System.out.println("error:" + e);
+        }
+    }
+
 
     private Connection getConnection() throws SQLException {
         Connection conn = null;
