@@ -76,7 +76,7 @@ public class BoardDao {
         return result;
     }
 
-    public List<BoardVo> findAllWithKeyword(Integer page, String keyword) {
+    public List<BoardVo> findAllWithKeyword(String keyword) {
         List<BoardVo> result = new ArrayList<>();
 
         try (
@@ -87,13 +87,11 @@ public class BoardDao {
                         "from board b left outer join user u " +
                         "on b.user_id = u.id " +
                         "where title like ? or contents like ? " +
-                        "order by g_no desc, o_no asc limit ?, ?");
+                        "order by g_no desc, o_no asc");
         ) {
             // limit
             pstmt.setString(1, "%" + keyword + "%");
             pstmt.setString(2, "%" + keyword + "%");
-            pstmt.setInt(3, (page - 1) * PAGE_SIZE);
-            pstmt.setInt(4, PAGE_SIZE);
 
             ResultSet rs = pstmt.executeQuery();
 
