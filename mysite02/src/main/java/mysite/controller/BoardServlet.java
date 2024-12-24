@@ -18,7 +18,8 @@ public class BoardServlet extends ActionServlet {
             "modify", new ModifyAction(),
             "edit", new EditAction(),
             "view", new ViewAction(),
-            "delete", new DeleteAction()
+            "delete", new DeleteAction(),
+            "search", new SearchListAction()
     );
 
     @Override

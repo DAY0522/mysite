@@ -76,6 +76,60 @@ public class BoardDao {
         return result;
     }
 
+    public List<BoardVo> findAllWithKeyword(Integer page, String keyword) {
+        List<BoardVo> result = new ArrayList<>();
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement("select b.id, " +
+                        "title, contents, hit, date_format(reg_date, '%Y-%m-%d %h:%i:%s'), " +
+                        "g_no, o_no, depth, user_id, name " +
+                        "from board b left outer join user u " +
+                        "on b.user_id = u.id " +
+                        "where title like ? or contents like ? " +
+                        "order by g_no desc, o_no asc limit ?, ?");
+        ) {
+            // limit
+            pstmt.setString(1, "%" + keyword + "%");
+            pstmt.setString(2, "%" + keyword + "%");
+            pstmt.setInt(3, (page - 1) * PAGE_SIZE);
+            pstmt.setInt(4, PAGE_SIZE);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Long id = rs.getLong(1);
+                String title = rs.getString(2);
+                String contents = rs.getString(3);
+                Integer hit = rs.getInt(4);
+                String regDate = rs.getString(5);
+                Integer g_no = rs.getInt(6);
+                Integer o_no = rs.getInt(7);
+                Integer depth = rs.getInt(8);
+                Long userId = rs.getLong(9);
+                String userName = rs.getString(10);
+
+                BoardVo vo = new BoardVo();
+                vo.setId(id);
+                vo.setTitle(title);
+                vo.setContents(contents);
+                vo.setHit(hit);
+                vo.setRegDate(regDate);
+                vo.setG_no(g_no);
+                vo.setO_no(o_no);
+                vo.setDepth(depth);
+                vo.setUserId(userId);
+                vo.setUserName(userName);
+
+                result.add(vo);
+            }
+        } catch (SQLException e) {
+            System.out.println("error:" + e);
+        }
+
+        return result;
+    }
+
     public int insert(BoardVo vo) {
         int count = 0;
 
@@ -135,23 +189,6 @@ public class BoardDao {
         }
 
         return vo;
-    }
-
-    public Integer findEndPage() {
-        Double count = null;
-        try (
-                Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement("select count(*) from board"); // 모든 게시글 개수 구하기
-        ) {
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                count = rs.getInt(1) / (double) PAGE_SIZE;
-            }
-        } catch (SQLException e) {
-            System.out.println("error:" + e);
-        }
-
-        return (int) Math.ceil(count);
     }
 
     public int deleteById(Long id) {

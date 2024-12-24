@@ -29,18 +29,18 @@ public class DeleteAction implements Action {
                 if (authUserId.equals(boardUserId)) { // 본인이 쓴 글인 경우
                     // 삭제하기
                     new BoardDao().deleteById(boardId);
-                    response.sendRedirect(request.getContextPath() + "/board");
+                    response.sendRedirect(request.getContextPath() + "/user?a=loginform");
                     return;
                 } else { // 본인이 쓴 글이 아닌 경우
-                    response.sendRedirect(request.getContextPath() + "/board");
+                    response.sendRedirect(request.getContextPath() + "/user?a=loginform");
                     return;
                 }
             } else { // 현재 유저 세션이 없는 경우
-                response.sendRedirect(request.getContextPath() + "/board");
+                response.sendRedirect(request.getContextPath() + "/user?a=loginform");
                 return;
             }
         } else { // 비회원인 경우
-            response.sendRedirect(request.getContextPath() + "/board");
+            response.sendRedirect(request.getContextPath() + "/user?a=loginform");
             return;
         }
     }

@@ -15,8 +15,9 @@
     <jsp:include page="/WEB-INF/views/includes/header.jsp"/>
     <div id="content">
         <div id="board">
-            <form id="search_form" action="" method="post">
-                <input type="text" id="kwd" name="kwd" value="">
+            <form id="search_form" action="${pageContext.request.contextPath}/board" method="post">
+                <input type = "hidden" name = "a" value="search">
+                <input type="text" id="keyword" name="keyword" value="">
                 <input type="submit" value="찾기">
             </form>
             <table class="tbl-ex">
@@ -46,7 +47,7 @@
 
             <div class="pager">
                 <ul>
-                    <c:if test="${not empty list}">
+                    <c:if test="${not empty list and not search}">
                         <c:if test="${currentPage ne 1}">
                             <li><a href="?p=${currentPage-1}">◀</a></li>
                         </c:if>
