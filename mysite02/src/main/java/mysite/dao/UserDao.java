@@ -18,11 +18,6 @@ public class UserDao {
             pstmt.setString(3, vo.getPassword());
             pstmt.setString(4, vo.getGender());
 
-            System.out.println("name: " + vo.getName());
-            System.out.println("email: " + vo.getEmail());
-            System.out.println("password: " + vo.getPassword());
-            System.out.println("gender: " + vo.getGender());
-
             count = pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("error:" + e);
@@ -93,7 +88,6 @@ public class UserDao {
                 PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, gender = ?, password = ? where id = ?");
         ) {
             pstmt.setString(1, vo.getName());
-            System.out.printf("name: " + vo.getName() + "\n");
             pstmt.setString(2, vo.getGender());
             pstmt.setString(3, vo.getPassword());
             pstmt.setLong(4, vo.getId());
@@ -121,7 +115,6 @@ public class UserDao {
             System.out.println("error:" + e);
         }
     }
-
 
     private Connection getConnection() throws SQLException {
         Connection conn = null;

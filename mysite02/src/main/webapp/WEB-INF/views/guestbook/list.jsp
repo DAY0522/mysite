@@ -1,6 +1,10 @@
 <%@ page import="mysite.vo.GuestbookVo" %>
 <%@ page import="java.util.List" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page isELIgnored="false" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <%
 	List<GuestbookVo> list = (List<GuestbookVo>) request.getAttribute("list");
 %>
@@ -9,14 +13,14 @@
 <head>
 	<title>mysite</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-	<link href="<%= request.getContextPath()%>/assets/css/guestbook.css" rel="stylesheet" type="text/css">
+	<link href="${pageContext.request.contextPath}/assets/css/guestbook.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div id="container">
 	<jsp:include page="/WEB-INF/views/includes/header.jsp"/>
 	<div id="content">
 		<div id="guestbook">
-			<form action="<%= request.getContextPath() %>/guestbook?a=insert" method="post">
+			<form action="${pageContext.request.contextPath}/guestbook?a=insert" method="post">
 				<input type="hidden" name="a" value="insert">
 				<table>
 					<tr>
@@ -33,29 +37,20 @@
 			</form>
 			<ul>
 				<li>
-					<%
-						int count = list.size();
-						int index = 0;
-						for (GuestbookVo vo : list) {
-					%>
-					<table>
-						<tr>
-							<td>[<%=count - index--%>]</td>
-							<td><%=vo.getName()%>
-							</td>
-							<td><%=vo.getRegDate()%>
-							</td>
-							<td><a href="<%= request.getContextPath() %>/guestbook?a=deleteform&id=<%=vo.getId()%>">삭제</a></td>
-						</tr>
-						<tr>
-							<td colspan=4><%=vo.getContents()%>
-							</td>
-						</tr>
-					</table>
-					<br>
-					<%
-						}
-					%>
+					<c:forEach var="vo" items="${list}" varStatus="status">
+						<table>
+							<tr>
+								<td>[${list.size() - status.index}]</td>
+								<td>${vo.name}</td>
+								<td>${vo.regDate}</td>
+								<td><a href="${pageContext.request.contextPath}/guestbook?a=deleteform&id=${vo.id}">삭제</a></td>
+							</tr>
+							<tr>
+								<td colspan="4">${vo.contents}</td>
+							</tr>
+						</table>
+						<br>
+					</c:forEach>
 				</li>
 			</ul>
 		</div>

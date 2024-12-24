@@ -14,7 +14,6 @@ import java.io.IOException;
 public class LoginAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("LoginAction");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
@@ -31,12 +30,12 @@ public class LoginAction implements Action {
 
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/loginform.jsp");
             rd.forward(request, response);
+            return;
         }
 
         // 로그인 처리
         HttpSession session = request.getSession();
         session.setAttribute("authUser", vo);
-
         response.sendRedirect(request.getContextPath());
     }
 }

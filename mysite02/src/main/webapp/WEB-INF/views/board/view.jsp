@@ -1,10 +1,14 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page isELIgnored="false" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link href="<%= request.getContextPath()%>/assets/css/board.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/assets/css/board.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div id="container">
@@ -17,22 +21,25 @@
 					</tr>
 					<tr>
 						<td class="label">제목</td>
-						<td>제목입니다.</td>
+						<td>${vo.title}</td>
 					</tr>
 					<tr>
 						<td class="label">내용</td>
 						<td>
 							<div class="view-content">
-								내용 1입니다.<br>
-								내용 2입니다.<br>
-								내용 3입니다.
+								${vo.contents}
 							</div>
 						</td>
 					</tr>
 				</table>
 				<div class="bottom">
-					<a href="">글목록</a>
-					<a href="">글수정</a>
+					<a href="${pageContext.request.contextPath}/board">글목록</a>
+					<c:if test="${isEditable eq true}">
+						<a href="?a=modify&id=${id}">글수정</a>
+					</c:if>
+					<c:if test="${sessionScope.authUser != null}">
+						<a href="?a=writeform&id=${id}">답글달기</a>
+					</c:if>
 				</div>
 			</div>
 		</div>

@@ -7,7 +7,8 @@ public class UserVo {
     private String password;
     private String gender;
 
-    public Long getId() {
+    public Long
+    getId() {
         return id;
     }
 

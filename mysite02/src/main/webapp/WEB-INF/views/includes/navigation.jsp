@@ -1,15 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: day
-  Date: 2024/12/18
-  Time: 2:58 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page isELIgnored="false" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <div id="navigation">
   <ul>
-    <li><a href="">김다영</a></li>
-    <li><a href="<%=request.getContextPath()%>/guestbook">방명록</a></li>
-    <li><a href="<%=request.getContextPath()%>/board">게시판</a></li>
+    <li><a href="${pageContext.request.contextPath}">김다영</a></li>
+    <li><a href="${pageContext.request.contextPath}/guestbook">방명록</a></li>
+    <li><a href="${pageContext.request.contextPath}/board">게시판</a></li>
   </ul>
 </div>

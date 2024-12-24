@@ -15,8 +15,6 @@ public class UpdateAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        System.out.println("UpdateAction");
-
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         String gender = request.getParameter("gender");
