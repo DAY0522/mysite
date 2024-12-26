@@ -18,13 +18,15 @@ public class ModifyAction implements Action {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session == null) {
-            response.sendRedirect(request.getContextPath());
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/loginform.jsp");
+            rd.forward(request, response);
             return;
         }
 
         UserVo authUser = (UserVo) session.getAttribute("authUser");
         if (authUser == null) {
-            response.sendRedirect(request.getContextPath());
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/loginform.jsp");
+            rd.forward(request, response);
             return;
         }
 
