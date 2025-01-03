@@ -11,6 +11,7 @@
     <modules>
         <module>mysite02</module>
         <module>mysite03</module>
+        <module>fileupload</module>
     </modules>
 
     <properties>

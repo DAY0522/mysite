@@ -21,6 +21,7 @@ public class BoardService {
 
     public void addContents(BoardVo vo, Long parentBoardId) {
 
+        System.out.println("parentBoardId " + parentBoardId);
         if (parentBoardId != null) { // 답글 등록
             BoardVo originVo = boardRepository.findById(parentBoardId);
             vo.setG_no(originVo.getG_no());
@@ -29,7 +30,10 @@ public class BoardService {
 
             boardRepository.updateGroupOrder(vo);
         } else { // 새글 등록
-            vo.setG_no(boardRepository.findLastGId()+1);
+            System.out.println("결과 출력: " + boardRepository.findLastGId());
+            Integer lastGId = boardRepository.findLastGId();
+            Integer gNo = lastGId != null ? lastGId : 0;
+            vo.setG_no(gNo+1);
         }
 
         boardRepository.insert(vo);
@@ -56,7 +60,7 @@ public class BoardService {
         List<BoardVo> list = null;
 
         // view의 pagination를 위한 데이터 값 계산
-        List<BoardVo> contentsList = boardRepository.findByPageAndKeword(cuurentPage, keyword);
+        List<BoardVo> contentsList = boardRepository.findByPageAndKeyword(cuurentPage, keyword);
 
         Map<String, Object> map = new HashMap<>();
 
