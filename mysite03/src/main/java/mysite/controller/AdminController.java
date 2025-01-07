@@ -1,18 +1,62 @@
 package mysite.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 import mysite.security.Auth;
+import mysite.service.AdminService;
+import mysite.vo.AdminVo;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.LocaleResolver;
 
 @Auth(role="ADMIN")
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
+    private final AdminService adminService;
+
+    private ServletContext servletContext;
+    private final ApplicationContext applicationContext;
+
+    public AdminController(AdminService adminService, ServletContext servletContext, ApplicationContext applicationContext) {
+        this.adminService = adminService;
+        this.servletContext = servletContext;
+        this.applicationContext = applicationContext;
+    }
+
     @RequestMapping({"", "/main"})
-    public String main() {
+    public String main(Model model, HttpServletRequest request) {
+
         return "admin/main";
+    }
+
+    @RequestMapping("/main/update")
+    public String update(
+            AdminVo vo,
+            @RequestParam("file") MultipartFile file
+        ) {
+
+        String url = adminService.restore(file);
+        if (url != null) {
+            vo.setProfile(url);
+        }
+        adminService.update(vo);
+
+        // update servlet context bean
+        servletContext.setAttribute("vo", vo); // 아예 새로운 걸로 바꿔치기
+
+        // update application context bean
+        AdminVo admin = applicationContext.getBean(AdminVo.class);
+        BeanUtils.copyProperties(vo, admin);
+
+        return "redirect:/admin";
     }
 
     @RequestMapping("/guestbook")
