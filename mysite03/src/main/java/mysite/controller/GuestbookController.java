@@ -1,9 +1,7 @@
 package mysite.controller;
 
-import jakarta.servlet.http.HttpSession;
 import mysite.service.GuestbookService;
 import mysite.vo.GuestbookVo;
-import mysite.vo.UserVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;

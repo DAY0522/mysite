@@ -1,8 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c"%>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ page isELIgnored="false" %>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
-<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,32 +17,42 @@
 		<jsp:include page="/WEB-INF/views/includes/header.jsp"/>
 		<div id="content">
 			<div id="user">
-				<form id="join-form" name="joinForm" method="post" action="${pageContext.request.contextPath}/user/join">
-					<label class="block-label" for="name">이름</label>
-					<input id="name" name="name" type="text" value="">
+				<form:form
+						modelAttribute="user"
+						action="${pageContext.request.contextPath}/user/join"
+						method="post"
+						id="join-form">
+					<label class="block-label" for="name"><spring:message code="user.join.label.name"/></label>
+					<form:input path="name" id="name" />
+					<br>
+					<form:errors path="name" cssClass="error-message"/>
 
-					<label class="block-label" for="email">이메일</label>
-					<input id="email" name="email" type="text" value="">
-					<input type="button" value="id 중복체크">
-					
-					<label class="block-label">패스워드</label>
-					<input name="password" type="password" value="">
-					
+					<label class="block-label" for="email"><spring:message code="user.join.label.email"/></label>
+					<form:input path="email" id="email" />
+					<input type="button" value="<spring:message code="user.join.label.email.check"/>">
+					<br>
+					<form:errors path="email" cssClass="error-message"/>
+
+					<label class="block-label"><spring:message code="user.join.label.password"/></label>
+					<form:input path="password" id="password" />
+					<br>
+					<form:errors path="password" cssClass="error-message"/>
+
 					<fieldset>
-						<legend>성별</legend>
-						<label>여</label> <input type="radio" name="gender" value="female" checked="checked">
-						<label>남</label> <input type="radio" name="gender" value="male">
+						<legend><spring:message code="user.join.label.gender"/></legend>
+						<label><spring:message code="user.join.label.gender.female"/></label> <input type="radio" name="gender" value="female" checked="checked">
+						<label><spring:message code="user.join.label.gender.male"/></label> <input type="radio" name="gender" value="male">
 					</fieldset>
-					
+
 					<fieldset>
-						<legend>약관동의</legend>
+						<legend><spring:message code="user.join.label.terms"/></legend>
 						<input id="agree-prov" type="checkbox" name="agreeProv" value="y">
-						<label>서비스 약관에 동의합니다.</label>
+						<label><spring:message code="user.join.label.terms.message"/></label>
 					</fieldset>
-					
-					<input type="submit" value="가입하기">
-					
-				</form>
+
+					<input type="submit" value="<spring:message code="user.join.button.signup"/>">
+
+				</form:form>
 			</div>
 		</div>
 		<jsp:include page="/WEB-INF/views/includes/navigation.jsp"/>

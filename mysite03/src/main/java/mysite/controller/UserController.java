@@ -1,17 +1,16 @@
 package mysite.controller;
 
-import mysite.vo.BoardVo;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
+import jakarta.validation.Valid;
 import mysite.security.Auth;
 import mysite.security.AuthUser;
 import mysite.service.UserService;
 import mysite.vo.UserVo;
-
-import javax.management.relation.Role;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/user")
@@ -24,13 +23,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/join", method = RequestMethod.GET)
-    public String join() {
+    public String join(@ModelAttribute("user") UserVo user) {
         return "user/join";
     }
 
     @RequestMapping(value = "/join", method = RequestMethod.POST)
-    public String join(UserVo userVo) {
-        userService.join(userVo);
+    public String join(@ModelAttribute("user") @Valid UserVo user, BindingResult result, Model model) {
+        if (result.hasErrors()) { // 에러 발생
+            model.addAllAttributes(result.getModel());
+
+            return "user/join";
+        }
+        userService.join(user);
         return "redirect:/user/joinsuccess";
     }
 

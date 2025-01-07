@@ -2,10 +2,9 @@ package mysite.repository;
 
 import mysite.vo.UserVo;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StopWatch;
 
-import javax.sql.DataSource;
 import java.util.Map;
 
 @Repository
@@ -22,6 +21,7 @@ public class UserRepository {
     }
 
     public UserVo findByEmailAndPassword(String email, String password) {
+
         return sqlSession.selectOne("user.findByEmailAndPassword", Map.of("email", email, "password", password));
     }
 
