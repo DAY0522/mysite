@@ -19,6 +19,10 @@ public class GuestbookRepository {
         return sqlSession.selectList("guestbook.findAll");
     }
 
+    public GuestbookVo findById(Long id) {
+        return sqlSession.selectOne("guestbook.findById", id);
+    }
+
     public int insert(GuestbookVo vo) {
         return sqlSession.insert("guestbook.insert", vo);
     }
@@ -27,4 +31,6 @@ public class GuestbookRepository {
         Map<String, Object> map = Map.of("id", id, "password", password); // vo를 굳이 안 만들고 map을 넣어줘도 됨.
         return sqlSession.delete("guestbook.deleteByIdAndPassword", map);
     }
+
+
 }
