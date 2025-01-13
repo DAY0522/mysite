@@ -4,6 +4,7 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import mysite.security.Auth;
 import mysite.service.AdminService;
+import mysite.service.FileUploadService;
 import mysite.vo.AdminVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
@@ -19,12 +20,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminController {
 
     private final AdminService adminService;
+    private final FileUploadService fileUploadService;
 
     private ServletContext servletContext;
     private final ApplicationContext applicationContext;
 
-    public AdminController(AdminService adminService, ServletContext servletContext, ApplicationContext applicationContext) {
+    public AdminController(AdminService adminService, FileUploadService fileUploadService, ServletContext servletContext, ApplicationContext applicationContext) {
         this.adminService = adminService;
+        this.fileUploadService = fileUploadService;
         this.servletContext = servletContext;
         this.applicationContext = applicationContext;
     }
@@ -41,7 +44,7 @@ public class AdminController {
             @RequestParam("file") MultipartFile file
         ) {
 
-        String url = adminService.restore(file);
+        String url = fileUploadService.restore(file);
         if (url != null) {
             vo.setProfile(url);
         }
