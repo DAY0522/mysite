@@ -37,7 +37,6 @@
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
 
-
     <!-- DefaultServlet Handler -->
     <mvc:default-servlet-handler/>
 
