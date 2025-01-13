@@ -26,8 +26,13 @@
                     type: "get",
                     dataType: "json",
                     success: function (response) {
-                        console.log(response)
-                        if (response.exist) {
+                        // console.log(response)
+                        if (response.result != "success") {
+                            console.error(response.message);
+                            return;
+
+                        }
+                        if (response.data.exist) {
                             // alert("") //  alret는 안쓰는 게 좋음.
                             alert("이메일이 존재합니다. 다른 이메일을 사용해 주세요.");
                             $("#email").val(""); // 기존 내용 지우기
