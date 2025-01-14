@@ -8,8 +8,6 @@ import mysite.vo.UserVo;
 @Service
 public class UserService {
 
-    private static final int PAGE_SIZE = 5;
-
     private UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {

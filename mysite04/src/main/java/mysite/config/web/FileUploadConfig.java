@@ -23,5 +23,4 @@ public class FileUploadConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/assets/upload-images/**")
                 .addResourceLocations("file:/Users/day/Desktop/mysite-uploads/");
     }
-
 }

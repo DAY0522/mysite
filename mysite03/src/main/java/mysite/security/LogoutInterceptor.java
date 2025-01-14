@@ -17,5 +17,4 @@ public class LogoutInterceptor implements HandlerInterceptor {
         response.sendRedirect(request.getContextPath());
         return false;
     }
-
 }
