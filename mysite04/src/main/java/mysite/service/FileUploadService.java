@@ -1,5 +1,8 @@
 package mysite.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,14 +14,15 @@ import java.util.Calendar;
 import java.util.Optional;
 
 @Service
+@PropertySource("classpath:mysite/config/web/fileupload.properties")
 public class FileUploadService {
 
-    private static final String SAVE_PATH = "/Users/day/Desktop/mysite-uploads";
-    private static final String URL = "/assets/upload-images";
+    @Autowired
+    private Environment env;
 
     public String restore(MultipartFile file) throws RuntimeException {
         try {
-            File uploadDirectory = new File(SAVE_PATH);
+            File uploadDirectory = new File(env.getProperty("fileupload.uploadLocation"));
             if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) { // 디렉토리가 존재하지 않고 만드는데 실패한 경우
                 return null;
             }
@@ -42,11 +46,11 @@ public class FileUploadService {
 
             byte[] data = file.getBytes();
 
-            OutputStream os = new FileOutputStream(SAVE_PATH + "/" + saveFilename);
+            OutputStream os = new FileOutputStream(env.getProperty("fileupload.uploadLocation") + "/" + saveFilename);
             os.write(data);
             os.close();
 
-            return URL + "/" + saveFilename;
+            return env.getProperty("fileupload.resourceUrl") + "/" + saveFilename;
 
         } catch (IOException e) {
             throw new RuntimeException(e);
