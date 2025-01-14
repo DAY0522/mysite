@@ -6,9 +6,9 @@
         <artifactId>mysite</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>mysite04</artifactId>
+    <artifactId>mysite05</artifactId>
     <packaging>war</packaging>
-    <name>mysite04 Maven Webapp</name>
+    <name>mysite05 Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -137,6 +137,6 @@
     </dependencies>
 
     <build>
-        <finalName>mysite04</finalName>
+        <finalName>mysite05</finalName>
     </build>
 </project>

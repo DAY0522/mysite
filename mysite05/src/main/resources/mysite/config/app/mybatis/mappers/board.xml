@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+    <insert id="insert" parameterType="boardvo">
+        <![CDATA[
+            insert into board
+            values(null, #{title}, #{contents}, #{hit}, now(), #{g_no}, #{o_no}, #{depth}, #{userId})
+        ]]>
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            <![CDATA[
+			select last_insert_id() from dual
+			]]>
+        </selectKey>
+    </insert>
+
+    <select id="findLastGId" resultType="int">
+        <![CDATA[
+        select max(g_no)
+        from board
+        ]]>
+    </select>
+
+    <select id="findByPageAndKeyword" parameterType="map" resultType="boardvo">
+        select b.id as id, title, contents, hit,
+               date_format(reg_date, '%Y-%m-%d %h:%i:%s') as reg_date,
+               g_no, o_no, depth, user_id, name
+        from board b
+                 left outer join user u
+                 on b.user_id = u.id
+        <if test="keyword != ''">
+            where b.title like #{keyword} or b.contents like #{keyword}
+        </if>
+        order by g_no desc, o_no asc
+        limit #{offset}, #{pageSize}
+    </select>
+
+    <select id="findById" parameterType="long" resultType="boardvo">
+        <![CDATA[
+        select id,
+               title,
+               contents,
+               user_id,
+               hit,
+               g_no,
+               o_no,
+               depth
+        from board
+        where id = #{id}
+        ]]>
+    </select>
+
+    <delete id="deleteByIdAndUserId" parameterType="map">
+        <![CDATA[
+        delete
+        from board
+        where id = #{id}
+          and user_id = #{userId}
+        ]]>
+    </delete>
+
+    <select id="findCountAll" parameterType="string" resultType="int">
+        select count(*)
+        from board
+        <if test= '_parameter != null and _parameter != ""'>
+            where title like '%${keyword}%' or contents like '%${keyword}%'
+        </if>
+    </select>
+
+    <update id="update" parameterType="map">
+        <![CDATA[
+        update board
+        set title    = #{title},
+            contents = #{contents}
+        where id = #{id}
+        ]]>
+    </update>
+
+    <update id="updateHitCount" parameterType="long">
+        update board
+        set hit = hit + 1
+        where id = #{id}
+    </update>
+
+    <update id="updateGroupOrder" parameterType="map">
+        update board
+        set o_no = o_no + 1
+        where g_no = #{g_no}
+          and o_no >= #{o_no}
+    </update>
+</mapper>
