@@ -23,8 +23,8 @@
 
     <select id="findByPageAndKeyword" parameterType="map" resultType="boardvo">
         select b.id as id, title, contents, hit,
-               date_format(reg_date, '%Y-%m-%d %h:%i:%s') as reg_date,
-               g_no, o_no, depth, user_id, name
+               date_format(reg_date, '%Y-%m-%d %h:%i:%s') as regDate,
+               g_no, o_no, depth, user_id as userId, name as userName
         from board b
                  left outer join user u
                  on b.user_id = u.id
@@ -40,7 +40,7 @@
         select id,
                title,
                contents,
-               user_id,
+               user_id as userId,
                hit,
                g_no,
                o_no,

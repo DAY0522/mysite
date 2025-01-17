@@ -2,6 +2,7 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
@@ -30,7 +31,8 @@
                 </tr>
                 <c:forEach items="${map.list}" var="board" varStatus="status">
                     <tr>
-                        <td><c:out value="${map.totalCount - (map.currentPage - 1) * map.page_size - status.index}"/></td>
+                        <td><c:out
+                                value="${map.totalCount - (map.currentPage - 1) * map.page_size - status.index}"/></td>
                         <td style="text-align:left; padding-left:${board.depth*20}px">
                             <c:if test="${board.depth ne 0}">
                                 <img src="${pageContext.request.contextPath}/assets/images/reply.png"/>
@@ -39,7 +41,8 @@
                         <td><c:out value="${board.userName}"/></td>
                         <td><c:out value="${board.hit}"/></td>
                         <td><c:out value="${board.regDate}"/></td>
-                        <td><a href="${pageContext.request.contextPath}/board/delete/${board.id}" class="del">삭제</a></td>
+                        <td><a href="${pageContext.request.contextPath}/board/delete/${board.id}" class="del">삭제</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>
@@ -63,7 +66,9 @@
             </div>
 
             <div class="bottom">
-                <a href="${pageContext.request.contextPath}/board/write" id="new-book">글쓰기</a>
+                <sec:authorize access="isAuthenticated()">
+                    <a href="${pageContext.request.contextPath}/board/write" id="new-book">글쓰기</a>
+                </sec:authorize>
             </div>
         </div>
     </div>

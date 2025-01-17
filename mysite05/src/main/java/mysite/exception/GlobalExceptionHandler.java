@@ -8,6 +8,7 @@ import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -35,7 +36,7 @@ public class GlobalExceptionHandler {
 
         if (accept.matches(".*application/json.*")) { // application/json이 있는지를 확인
             // 3. JSON 응답
-            JsonResult jsonResult = JsonResult.fail(errors.toString());
+            JsonResult jsonResult = JsonResult.fail((e instanceof NoHandlerFoundException) ? "Unknown API URL" : errors.toString());
             String jsonString = new ObjectMapper().writeValueAsString(jsonResult);
 
             response.setStatus(HttpServletResponse.SC_OK);
@@ -43,8 +44,13 @@ public class GlobalExceptionHandler {
             OutputStream os = response.getOutputStream();
             os.write(jsonString.getBytes("utf-8"));
             os.close();
+
+            return;
+        }
+        // 4. 사과 페이지
+        if (e instanceof NoHandlerFoundException) {
+            request.getRequestDispatcher("/WEB-INF/views/errors/404.jsp").forward(request, response);
         } else {
-            // 4. 사과 페이지
             request.setAttribute("errors", errors.toString());
             request.getRequestDispatcher("/WEB-INF/views/errors/exception.jsp").forward(request, response);
         }

@@ -2,6 +2,7 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
@@ -37,9 +38,9 @@
 					<c:if test="${isEditable eq true}">
 						<a href="${pageContext.request.contextPath}/board/modify/${id}">글수정</a>
 					</c:if>
-					<c:if test="${sessionScope.authUser != null}">
+					<sec:authorize access="isAuthenticated()">
 						<a href="${pageContext.request.contextPath}/board/write/${id}">답글달기</a>
-					</c:if>
+					</sec:authorize>
 				</div>
 			</div>
 		</div>

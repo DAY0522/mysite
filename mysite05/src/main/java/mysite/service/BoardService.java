@@ -21,7 +21,6 @@ public class BoardService {
 
     public void addContents(BoardVo vo, Long parentBoardId) {
 
-        System.out.println("parentBoardId " + parentBoardId);
         if (parentBoardId != null) { // 답글 등록
             BoardVo originVo = boardRepository.findById(parentBoardId);
             vo.setG_no(originVo.getG_no());
@@ -61,6 +60,7 @@ public class BoardService {
 
         // view의 pagination를 위한 데이터 값 계산
         List<BoardVo> contentsList = boardRepository.findByPageAndKeyword(cuurentPage, keyword);
+        System.out.println("contentList: " + contentsList);
 
         Map<String, Object> map = new HashMap<>();
 

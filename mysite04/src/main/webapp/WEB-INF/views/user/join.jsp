@@ -56,7 +56,6 @@
 <div id="container">
     <jsp:include page="/WEB-INF/views/includes/header.jsp"/>
     <div id="content">
-        <div id="user">
             <form:form
                     modelAttribute="user"
                     action="${pageContext.request.contextPath}/user/join"

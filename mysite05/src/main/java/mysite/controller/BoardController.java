@@ -1,10 +1,9 @@
 package mysite.controller;
 
-import mysite.security.Auth;
-import mysite.security.AuthUser;
 import mysite.service.BoardService;
 import mysite.vo.BoardVo;
 import mysite.vo.UserVo;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/board")
@@ -32,23 +32,21 @@ public class BoardController {
         Map<String, Object> contentsList = boardService.getContentsList(page, keyword);
         model.addAttribute("map", contentsList);
 
-        return "board/list";
+        return "board/index";
     }
 
-    @Auth
     @RequestMapping(value = {"/write", "/write/{id}"}, method = RequestMethod.GET)
     public String write(@PathVariable(value = "id", required = false) Long id) {
         return "board/write";
     }
 
-    @Auth
     @RequestMapping(value = "/write", method = RequestMethod.POST)
-    public String write(@AuthUser UserVo userVo,
+    public String write(Authentication authentication,
                         BoardVo boardVo,
                         @RequestParam(value = "id", defaultValue = "") Long parentBoardId) {
 
-        System.out.printf("id: %d\n", parentBoardId);
-        boardVo.setUserId(userVo.getId());
+        UserVo authUser = (UserVo) authentication.getPrincipal();
+        boardVo.setUserId(authUser.getId());
         boardService.addContents(boardVo, parentBoardId);
 
         return "redirect:/board";
@@ -57,19 +55,18 @@ public class BoardController {
     @RequestMapping("/view/{id}")
     public String view(Model model,
                        @PathVariable("id") Long id,
-                       @AuthUser UserVo authUser) {
+                       Authentication authentication) {
         BoardVo vo = boardService.getContents(id);
         model.addAttribute("vo", vo);
-        if (authUser != null && authUser.getId() == vo.getUserId()) {
-            model.addAttribute("isEditable", true);
-        } else {
+        if (authentication == null || !authentication.isAuthenticated()) {
             model.addAttribute("isEditable", false);
+        } else {
+            model.addAttribute("isEditable", true);
         }
 
         return "board/view";
     }
 
-    @Auth
     @RequestMapping(value = "/modify/{id}", method = RequestMethod.GET)
     public String modify(@PathVariable("id") Long id, Model model) {
         BoardVo vo = boardService.getContents(id);
@@ -77,7 +74,6 @@ public class BoardController {
         return "board/modify";
     }
 
-    @Auth
     @RequestMapping(value = "/modify/{id}", method = RequestMethod.POST)
     public String modify(BoardVo vo, Model model) {
         boardService.updateContents(vo);
@@ -85,9 +81,9 @@ public class BoardController {
         return "board/view";
     }
 
-    @Auth
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Long id, @AuthUser UserVo authUser) {
+    public String delete(@PathVariable("id") Long id, Authentication authentication) {
+        UserVo authUser = (UserVo) authentication.getPrincipal();
         boardService.deleteContents(id, authUser.getId());
         return "redirect:/board";
     }
