@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
         } else {
             request.setAttribute("errors", errors.toString());
             request
-                    .getRequestDispatcher("/errors/exception.jsp")
+                    .getRequestDispatcher("/errors/500.jsp")
                     .forward(request, response);
         }
     }
