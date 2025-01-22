@@ -29,8 +29,9 @@ public class DBConfig {
         return dataSource;
     }
 
-    @Bean
-    public TransactionManager transactionManager(DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }
+//    spring boot에서는 직접 만들지 않음.
+//    @Bean
+//    public TransactionManager transactionManager(DataSource dataSource) {
+//        return new DataSourceTransactionManager(dataSource);
+//    }
 }

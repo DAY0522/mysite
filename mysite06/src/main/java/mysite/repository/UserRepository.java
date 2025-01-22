@@ -17,7 +17,6 @@ public class UserRepository {
     }
 
     public int insert(UserVo vo) {
-        System.out.println("password: " + vo.getPassword() + ", size: " + vo.getPassword().length());
         return sqlSession.insert("user.insert", vo);
     }
 

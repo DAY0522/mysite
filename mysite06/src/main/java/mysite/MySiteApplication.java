@@ -1,13 +1,10 @@
 package mysite;
 
-import mysite.config.AppConfig;
-import mysite.config.WebConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({AppConfig.class, WebConfig.class})
+//@Import({AppConfig.class, WebConfig.class}) // spring boot에서는 자동으로 import함. test 환경에서는 따로 import 해야 함.
 public class MySiteApplication {
     public static void main(String[] args) {
         SpringApplication.run(MySiteApplication.class, args);

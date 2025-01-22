@@ -39,11 +39,6 @@ public class FileUploadService {
             String extName = originFilename.substring(originFilename.lastIndexOf('.') + 1); // 확장자
             String saveFilename = generateSaveFilename(extName);
             long fileSize = file.getSize();
-
-            System.out.println("#####" + originFilename);
-            System.out.println("#####" + saveFilename);
-            System.out.println("#####" + fileSize);
-
             byte[] data = file.getBytes();
 
             OutputStream os = new FileOutputStream(env.getProperty("fileupload.uploadLocation") + "/" + saveFilename);
