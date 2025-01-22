@@ -1,4 +1,4 @@
-package mysite.config.app;
+package mysite.config;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
