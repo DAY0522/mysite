@@ -16,7 +16,7 @@ public class MainController {
     public String index(Model model) {
 //        AdminVo vo = applicationContext.getBean(AdminVo.class);
 //        System.out.println(vo);
-        return "main/index";
+        return "main/index2";
     }
 
     @ResponseBody
