@@ -3,7 +3,6 @@ spring:
   application:
     name: mysite06
 
-  # devtool
   devtools:
     restart:
       enabled: true
@@ -14,6 +13,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+  # aop
   aop:
     auto: true
     proxy-target-class: true
@@ -21,13 +21,12 @@ spring:
   # mvc
   mvc:
     static-path-pattern: /assets/**
-  #    view:
-#      prefix: /WEB-INF/views/
-#      suffix: .jsp
-
+  #   view:
+  #      prefix: /WEB-INF/views/
+  #      suffix: .jsp
   web:
     resources:
-      static-locations: [classpath:assets/, file:/Users/day/Desktop/mysite-uploads]
+      static-locations: [classpath:assets/, file:/Users/day/Desktop/]
 
   servlet:
     multipart:
@@ -54,16 +53,16 @@ spring:
 mybatis:
   config-location: classpath:mybatis/configuration.xml
 
-# logging
-logging:
-  config: classpath:logback.xml
-
-# server
+# server configuration
 server:
-  port: 8088
+  port: 8080
   servlet:
     context-path: /mysite06
   error:
     whitelabel:
       enabled: false
     path: /error
+
+# logging
+logging:
+  config: classpath:logback.xml

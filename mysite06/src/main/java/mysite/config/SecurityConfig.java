@@ -27,16 +27,9 @@ import java.io.IOException;
 @SpringBootConfiguration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return webSecurity -> webSecurity.httpFirewall(new DefaultHttpFirewall());
-//        return new WebSecurityCustomizer() {
-//            @Override
-//            public void customize(WebSecurity web) {
-//                web.httpFirewall(new DefaultHttpFirewall());
-//            }
-//        };
     }
 
     @Bean
@@ -86,19 +79,20 @@ public class SecurityConfig {
                             .anyRequest()
                             .permitAll();
                 });
-//                .exceptionHandling(exceptionHandling -> {
-//                    // exceptionHandling.accessDeniedPage("/WEB-INF/views/errors/403.jsp");
-//                    exceptionHandling.accessDeniedHandler(new AccessDeniedHandler() {
-//                        @Override
-//                        public void handle(
-//                                HttpServletRequest request,
-//                                HttpServletResponse response,
-//                                AccessDeniedException accessDeniedException) throws IOException, ServletException {
-//                            response.sendRedirect(request.getContextPath());
-//                        }
-//                    });
-//                });
-
+        	/*
+        	.exceptionHandling(exceptionHandling -> {
+        		// exceptionHandling.accessDeniedPage("/error/403");
+        		exceptionHandling.accessDeniedHandler(new AccessDeniedHandler() {
+					@Override
+					public void handle(
+						HttpServletRequest request,
+						HttpServletResponse response,
+						AccessDeniedException accessDeniedException) throws IOException, ServletException {
+						response.sendRedirect(request.getContextPath());
+					}
+        		});
+        	});
+        	*/
         return http.build();
     }
 

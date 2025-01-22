@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/error")
 public class WhitelabelErrorController implements ErrorController {
-
-    // from GlobalExceptionHandler
+    /* from GlobalExceptionHandler */
     @RequestMapping("/404")
     public String _404() {
         return "errors/404";
@@ -22,19 +21,20 @@ public class WhitelabelErrorController implements ErrorController {
         return "errors/500";
     }
 
-    // from White Label
+    /* from White Label */
     @RequestMapping("")
     public String handleError(HttpServletRequest request) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-        if (status != null) {
+        if(status != null) {
             int statusCode = Integer.parseInt(status.toString());
-            if (statusCode == HttpStatus.NOT_FOUND.value()) {
+
+            if(statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "errors/404";
-            } else if (statusCode == HttpStatus.FORBIDDEN.value()) { // 403
+            } else if(statusCode == HttpStatus.FORBIDDEN.value()) {
                 return "errors/403";
-            } else if (statusCode == HttpStatus.BAD_REQUEST.value()) { // 403
-                    return "errors/400";
-            } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+            } else if(statusCode == HttpStatus.BAD_REQUEST.value()) {
+                return "errors/400";
+            } else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                 return "errors/500";
             }
         }

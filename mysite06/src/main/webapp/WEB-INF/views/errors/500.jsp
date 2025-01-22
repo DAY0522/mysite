@@ -9,9 +9,7 @@
 <body>
 <h1>Internal Server Error(500) : Custom</h1>
 <pre style="color: #f00">
-<p>
-${errors}
-</p>
+    ${errors}
 </pre>
 
 </body>

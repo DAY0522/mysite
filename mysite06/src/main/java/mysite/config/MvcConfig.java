@@ -1,7 +1,5 @@
 package mysite.config;
 
-import mysite.event.ApplicationContextEventListener;
-import mysite.interceptor.SiteInterceptor;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -13,8 +11,10 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import mysite.event.ApplicationContextEventListener;
+import mysite.interceptor.SiteInterceptor;
+
 @SpringBootConfiguration
-//@EnableWebMvc // 이거 있으면 msg02 한글 출력이 안 됨.
 public class MvcConfig implements WebMvcConfigurer {
 
     //Locale Resolver

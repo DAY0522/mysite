@@ -22,7 +22,6 @@
 
                 <label class="block-label" for="email">이메일</label>
                 <h3>${vo.email}</h3>
-                <input type="button" value="id 중복체크">
 
                 <label class="block-label">패스워드</label>
                 <input name="password" type="password" value="">

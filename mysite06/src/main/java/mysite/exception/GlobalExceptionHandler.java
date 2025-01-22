@@ -1,8 +1,9 @@
 package mysite.exception;
 
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import mysite.dto.JsonResult;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,11 +11,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import mysite.dto.JsonResult;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,13 +31,13 @@ public class GlobalExceptionHandler {
         log.error(errors.toString());
 
         //2. 요청 구분
-        // json 요청: request header의 accept: application/json (o)
-        // html 요청: request header의 accept: application/json (x)
+        //	 json 요청: request header의 accept: application/json (o)
+        //	 html 요청: request header의 accept: application/json (x)
         String accept = request.getHeader("accept");
 
         //3. JSON 응답
         if(accept.matches(".*application/json.*")) {
-            JsonResult jsonResult = JsonResult.fail((e instanceof NoHandlerFoundException) ? "Unknown API URL" : errors.toString());
+            JsonResult jsonResult = JsonResult.fail(e instanceof NoHandlerFoundException ? "Unknown API URL" : errors.toString());
             String jsonString = new ObjectMapper().writeValueAsString(jsonResult);
 
             response.setStatus(HttpServletResponse.SC_OK);
@@ -53,12 +52,12 @@ public class GlobalExceptionHandler {
         //4. HTML 응답: 사과 페이지(종료)
         if(e instanceof NoHandlerFoundException || e instanceof NoResourceFoundException) {
             request
-                    .getRequestDispatcher("/errors/404.jsp")
+                    .getRequestDispatcher("/error/404")
                     .forward(request, response);
         } else {
             request.setAttribute("errors", errors.toString());
             request
-                    .getRequestDispatcher("/errors/500.jsp")
+                    .getRequestDispatcher("/error/500")
                     .forward(request, response);
         }
     }
